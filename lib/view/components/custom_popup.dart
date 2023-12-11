@@ -2,10 +2,10 @@ part of 'components_helper.dart';
 
 PopupMenuButton<int> customPopup(
   BuildContext context, {
-  required IconData icon1,
-  required IconData icon2,
   required String title1,
-  required String title2,
+  required IconData icon1,
+  String? title2,
+  IconData? icon2,
   required Function(int) onSelected,
 }) {
   return PopupMenuButton(
@@ -27,16 +27,18 @@ PopupMenuButton<int> customPopup(
           ),
           PopupMenuItem(
             value: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(
-                  icon2,
-                  color: Colors.black,
-                ),
-                Text(title2),
-              ],
-            ),
+            child: title2 == null
+                ? const SizedBox()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        icon2,
+                        color: Colors.black,
+                      ),
+                      Text(title2),
+                    ],
+                  ),
           ),
         ];
       },

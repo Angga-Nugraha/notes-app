@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes_app/view/bloc/notes_bloc/note_bloc.dart';
+import 'package:notes_app/view/bloc/pdf_bloc/pdf_bloc.dart';
 import 'package:notes_app/view/components/components_helper.dart';
 import 'package:notes_app/view/home_page.dart';
 
@@ -66,7 +67,7 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                 if (title.isNotEmpty && content.isNotEmpty) {
                   if (widget.type == ActionType.editNote) {
                     final newNote = NoteModel(
-                      id: widget.note!.key,
+                      id: widget.note!.key ?? widget.note!.id,
                       title: _titleController.text,
                       body: _contentController.text,
                       createdAt: now.toIso8601String(),
@@ -104,21 +105,29 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
               context,
               icon1: FontAwesomeIcons.filePdf,
               title1: 'Save as PDF',
-              icon2: Icons.delete_forever_outlined,
-              title2: 'Delete',
+              icon2: widget.type == ActionType.addNote
+                  ? null
+                  : Icons.delete_outline_outlined,
+              title2: widget.type == ActionType.addNote ? null : 'Delete',
               onSelected: (value) {
                 switch (value) {
                   case 0:
-                    mySnackbar(context, title: 'Comming soon');
+                    final data = {
+                      "title": _titleController.value.text,
+                      "content": _contentController.value.text,
+                    };
+                    context.read<PDFBloc>().add(SaveAsPdf(data));
                   case 1:
-                    myDialog(
-                      context,
-                      onPressed: () {
-                        context
-                            .read<NoteBloc>()
-                            .add(DeleteNote(widget.note!.key));
-                      },
-                    );
+                    widget.type == ActionType.addNote
+                        ? () {}
+                        : myDialog(
+                            context,
+                            onPressed: () {
+                              context
+                                  .read<NoteBloc>()
+                                  .add(DeleteNote(widget.note!.key));
+                            },
+                          );
                   default:
                 }
               },
@@ -178,7 +187,7 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                         ),
                       ),
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                       ),
                     ),
                   ),
@@ -229,10 +238,6 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                     mySnackbar(context, title: state.result);
                   case NoteUpdated():
                     mySnackbar(context, title: state.result);
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (ctx) => const HomePage()),
-                      (route) => false,
-                    );
                   case NoteDeleted():
                     mySnackbar(context, title: state.result);
                     Navigator.of(context).pushAndRemoveUntil(

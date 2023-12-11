@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notes_app/data/model/notes_model.dart';
 import 'package:notes_app/view/bloc/notes_bloc/note_bloc.dart';
+import 'package:notes_app/view/bloc/pdf_bloc/pdf_bloc.dart';
 import "injection.dart" as di;
 
 import 'view/home_page.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => di.locator<NoteBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<PDFBloc>(),
         )
       ],
       child: MaterialApp(

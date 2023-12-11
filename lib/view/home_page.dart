@@ -28,9 +28,8 @@ class _HomePageState extends State<HomePage> {
   bool isGridView = true;
 
   void _pickDocument() async {
-    if (await Permission.manageExternalStorage.isDenied) {
-      await Permission.manageExternalStorage.request();
-    }
+    await Permission.manageExternalStorage.request();
+
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -74,9 +73,9 @@ class _HomePageState extends State<HomePage> {
             duration: const Duration(milliseconds: 700),
             child: customPopup(
               context,
-              icon1: Icons.note_add,
+              icon1: FontAwesomeIcons.noteSticky,
               title1: 'Add Note',
-              icon2: Icons.settings,
+              icon2: FontAwesomeIcons.gear,
               title2: 'Settings',
               onSelected: (value) {
                 switch (value) {
@@ -109,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     TimerBuilder.periodic(const Duration(seconds: 1),
                         builder: (context) {
                       return Text(
-                        dateFormat.format(DateTime.now()),
+                        dateFullFormat.format(DateTime.now()),
                         style: const TextStyle(
                             color: Color(0xff2d386b),
                             fontSize: 14,
@@ -191,51 +190,4 @@ class _HomePageState extends State<HomePage> {
           child: const Icon(FontAwesomeIcons.pencil)),
     );
   }
-
-  // PopupMenuButton<int> customPopup(BuildContext context) {
-  //   return PopupMenuButton(
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-  //     itemBuilder: (context) {
-  //       return [
-  //         PopupMenuItem(
-  //           value: 0,
-  //           child: Row(
-  //             children: [
-  //               Icon(
-  //                 Icons.note_add,
-  //                 color: Theme.of(context).colorScheme.primary,
-  //               ),
-  //               const Text('New Note'),
-  //             ],
-  //           ),
-  //         ),
-  //         const PopupMenuItem(
-  //           value: 1,
-  //           child: Row(
-  //             children: [
-  //               Icon(
-  //                 Icons.settings,
-  //                 color: Colors.black,
-  //               ),
-  //               Text('Settings'),
-  //             ],
-  //           ),
-  //         ),
-  //       ];
-  //     },
-  //     onSelected: (value) {
-  //       switch (value) {
-  //         case 0:
-  //           Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                 builder: (context) => const ViewNoteForm(),
-  //               ));
-  //         case 1:
-  //           break;
-  //         default:
-  //       }
-  //     },
-  //   );
-  // }
 }

@@ -11,7 +11,8 @@ List<Color> color = [
 ];
 final DateFormat dateFormat = DateFormat('d MMM yyy, h:mm a');
 
-// final DateFormat dateFormat = DateFormat('EEEE, d MMM yyy, h:mm a');
+final DateFormat dateFullFormat = DateFormat('EEEE, d MMM yyy, h:mm a');
+
 enum ActionType {
   addNote,
   editNote,
