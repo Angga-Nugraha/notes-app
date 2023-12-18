@@ -183,11 +183,11 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                         border: InputBorder.none,
                         hintText: 'Content here...',
                         hintStyle: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                         ),
                       ),
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                     ),
                   ),
