@@ -28,8 +28,10 @@ class _HomePageState extends State<HomePage> {
   bool isGridView = true;
 
   void _pickDocument() async {
-    await Permission.manageExternalStorage.request();
-
+    final status = await Permission.storage.status;
+    if (status == PermissionStatus.denied) {
+      await Permission.storage.request();
+    }
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],

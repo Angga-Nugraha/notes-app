@@ -116,7 +116,13 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                       "title": _titleController.value.text,
                       "content": _contentController.value.text,
                     };
-                    context.read<PDFBloc>().add(SaveAsPdf(data));
+                    if (_titleController.value.text.isNotEmpty &&
+                        _contentController.value.text.isNotEmpty) {
+                      context.read<PDFBloc>().add(SaveAsPdf(data));
+                    } else {
+                      mySnackbar(context,
+                          title: 'Fill the Title and Content !!!');
+                    }
                   case 1:
                     widget.type == ActionType.addNote
                         ? () {}
@@ -183,11 +189,11 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                         border: InputBorder.none,
                         hintText: 'Content here...',
                         hintStyle: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -236,8 +242,13 @@ class _ViewNoteFormState extends State<ViewNoteForm> {
                 switch (state) {
                   case NoteAdded():
                     mySnackbar(context, title: state.result);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (ctx) => const HomePage()),
+                      (route) => false,
+                    );
                   case NoteUpdated():
                     mySnackbar(context, title: state.result);
+
                   case NoteDeleted():
                     mySnackbar(context, title: state.result);
                     Navigator.of(context).pushAndRemoveUntil(
